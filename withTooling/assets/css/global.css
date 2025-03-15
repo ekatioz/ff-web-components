@@ -1,0 +1,18 @@
+:root {
+	--color-primary: #007bff;
+	--color-on-primary: #fff;
+}
+
+@font-face {
+	font-family: "Hanken Grotesk";
+	src: url("/assets/fonts/HankenGrotesk-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Hanken Grotesk, sans-serif;
+}

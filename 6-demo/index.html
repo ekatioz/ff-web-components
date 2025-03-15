@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <template id="my-template">
+        <style>
+            #box {
+                width: 100px;
+                height: 100px;
+            }
+        </style>
+
+        <div id="box">
+        </div>
+    </template>
+
+    <script>
+        class BoxComponent extends HTMLElement {
+            static observedAttributes = ["color", "rounded"];
+
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+                const template = document.getElementById('my-template').content.cloneNode(true);
+                shadow.appendChild(template);
+            }
+
+            connectedCallback() {
+                this.shadowRoot.querySelector('#box').style.backgroundColor = this.getAttribute('color');
+            }
+
+            attributeChangedCallback(name, oldValue, newValue) {
+                if (name === 'rounded') {
+                    this.shadowRoot.querySelector('#box').style.borderRadius = newValue === null ? 0 : '50%';
+                } else if (name === 'color') {
+                    this.shadowRoot.querySelector('#box').style.backgroundColor = newValue;
+                }
+            }
+        }
+
+        customElements.define('box-component', BoxComponent);
+    </script>
+
+    <box-component color="hotpink"></box-component>
+
+    <script>
+        const box = document.querySelector('box-component');
+        setInterval(() => {
+            const color = box.getAttribute('color');
+            box.setAttribute('color', color === 'hotpink' ? "deepskyblue" : "hotpink");
+        }, 2000);
+        setInterval(() => {
+            const rounded = box.getAttribute('rounded');
+            if (box.hasAttribute('rounded')) {
+                box.removeAttribute('rounded');
+            } else {
+                box.setAttribute('rounded', "");
+            }
+        }, 1000);
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <template id="my-template">
+        <style>
+            .text {
+                color: blue;
+            }
+        </style>
+
+        <p class="text">
+            <slot></slot>
+        </p>
+    </template>
+
+    <script>
+        class MyComponent extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+                const template = document.getElementById('my-template').content.cloneNode(true);
+                shadow.appendChild(template);
+            }
+        }
+
+        customElements.define('my-component', MyComponent);
+    </script>
+
+    <my-component>Hello, I am a Web Component!</my-component>
+    <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro, expedita.</p>
+</body>
+
+</html>

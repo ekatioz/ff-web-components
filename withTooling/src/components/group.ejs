@@ -1,0 +1,33 @@
+<template id="group-template">
+  <style>
+    .group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    slot::slotted(*) {
+      flex: 1 1 0;
+    }
+  </style>
+  <div class="group">
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+  class GroupComponent extends HTMLElement {
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document
+        .getElementById("group-template")
+        .content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+  }
+
+  customElements.define("group-component", GroupComponent);
+</script>

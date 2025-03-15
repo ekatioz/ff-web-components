@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <script>
+        class MyComponent extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+                shadow.appendChild(document.createTextNode('Hello, I am a Web Component!'));
+            }
+        }
+
+        customElements.define('my-component', MyComponent);
+    </script>
+
+    <my-component></my-component>
+</body>
+
+</html>

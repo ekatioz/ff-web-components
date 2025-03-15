@@ -1,0 +1,61 @@
+<template id="button-template">
+  <style>
+    .button {
+      border: none;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      width: 100%;
+      font-size: 1rem;
+      background-color: var(--color-primary, #505050);
+      color: var(--color-on-primary, white);
+      cursor: pointer;
+
+      &[data-rounded="true"] {
+        border-radius: 4px;
+      }
+    }
+  </style>
+  <button id="button" class="button">
+    <slot></slot>
+  </button>
+</template>
+
+<script>
+  class ButtonComponent extends HTMLElement {
+    static get observedAttributes() {
+      return ['rounded'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === 'rounded') {
+        this.updateRounded(newValue);
+      }
+    }
+
+    updateRounded(value) {
+      const button = this.shadowRoot.getElementById('button');
+      button.dataset.rounded = this.rounded;
+    }
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document.getElementById("button-template").content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+
+    get rounded() {
+      return this.hasAttribute('rounded');
+    }
+
+    set rounded(value) {
+      this.setAttribute('rounded', "true");
+    }
+  }
+
+  customElements.define("button-component", ButtonComponent);
+</script>

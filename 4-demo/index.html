@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <template id="my-template">
+        <style>
+            #box {
+                width: 100px;
+                height: 100px;
+            }
+        </style>
+
+        <div id="box">
+        </div>
+    </template>
+
+    <script>
+        class BoxComponent extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+                const template = document.getElementById('my-template').content.cloneNode(true);
+                shadow.appendChild(template);
+            }
+
+            connectedCallback() {
+                this.shadowRoot.querySelector('#box').style.backgroundColor = this.getAttribute('color');
+            }
+        }
+
+        customElements.define('box-component', BoxComponent);
+    </script>
+
+    <box-component color="hotpink"></box-component>
+
+</body>
+
+</html>

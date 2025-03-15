@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSR</title>
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/react-component/dist/react-component.js"></script>
+  <script src="/assets/vue-component/dist/vue-component.mjs" type="module"></script>
+</head>
+
+<body>
+  <%- include('../../components/card.ejs') %>
+  <%- include('../../components/group.ejs') %>
+  <%- include('../../components/layout.ejs') %>
+  <%- include('../../components/stack.ejs') %>
+  <%- include('../../components/title.ejs') %>
+
+
+  <layout-component>
+    <stack-component>
+      <title-component>Server Side Rendering</title-component>
+      <group-component>
+        <% cards.forEach(function(card) { %>
+        <card-component title="<%= card.title %>" image-src="<%= card.imageSrc %>" image-alt="<%= card.imageAlt %>" cta-text="<%= card.ctaText %>">
+          <p><%= card.content %></p>
+        </card-component>
+        <% }); %>
+      </group-component>
+    </stack-component>
+  </layout-component>
+
+</body>
+
+</html>
+</div>
+
+</html>

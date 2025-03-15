@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSR with dependencies</title>
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/react-component/dist/react-component.js"></script>
+  <script src="/assets/vue-component/dist/vue-component.mjs" type="module"></script>
+</head>
+
+<body>
+  <%- include('../../components/card-with-average-color-button.ejs') %>
+  <%- include('../../components/card-list.ejs') %>
+  <%- include('../../components/layout.ejs') %>
+  <%- include('../../components/stack.ejs') %>
+  <%- include('../../components/title.ejs') %>
+
+  <layout-component>
+    <stack-component>
+      <title-component>Client Side Rendering with NPM dependencies</title-component>
+      <card-list-component></card-list-component>
+    </stack-component>
+  </layout-component>
+
+</body>
+
+</html>
+</div>
+
+</html>

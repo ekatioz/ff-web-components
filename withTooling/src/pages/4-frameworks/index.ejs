@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frameworks</title>
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/react-component/dist/react-component.js"></script>
+  <script src="/assets/vue-component/dist/vue-component.mjs" type="module"></script>
+  <script src="/assets/lit-component/dist/lit-component.js"></script>
+</head>
+
+<body>
+  <%- include('../../components/layout.ejs') %>
+  <%- include('../../components/stack.ejs') %>
+  <%- include('../../components/group.ejs') %>
+  <%- include('../../components/title.ejs') %>
+
+  <layout-component>
+    <stack-component>
+      <title-component>Using Frameworks</title-component>
+      <group-component>
+        <react-component></react-component>
+        <vue-component></vue-component>
+        <lit-component></lit-component>
+      </group-component>
+    </stack-component>
+  </layout-component>
+
+</body>
+
+</html>
+</div>
+
+</html>

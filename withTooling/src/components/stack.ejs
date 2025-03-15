@@ -1,0 +1,29 @@
+<template id="stack-template">
+  <style>
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  </style>
+  <div class="stack">
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+  class StackComponent extends HTMLElement {
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document
+        .getElementById("stack-template")
+        .content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+  }
+
+  customElements.define("stack-component", StackComponent);
+</script>

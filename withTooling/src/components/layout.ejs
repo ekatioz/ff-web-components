@@ -1,0 +1,29 @@
+<template id="layout-template">
+  <style>
+    .layout {
+      max-width: 932px;
+      padding-inline: 16px;
+      margin: 32px auto;
+    }
+  </style>
+  <div class="layout">
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+  class LayoutComponent extends HTMLElement {
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document
+        .getElementById("layout-template")
+        .content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+  }
+
+  customElements.define("layout-component", LayoutComponent);
+</script>

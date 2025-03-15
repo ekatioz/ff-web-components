@@ -1,0 +1,116 @@
+<%- include('./button.ejs') %>
+
+<template id="card-template">
+  <style>
+    .card {
+      font-family: Arial, Helvetica, sans-serif;
+      border-radius: 4px;
+      overflow: hidden;
+      min-width: 200px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .header img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .content {
+      padding: 16px;
+      flex-grow: 1;
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: 1.5em;
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: #555;
+      }
+    }
+  </style>
+
+  <div class="card">
+    <div class="header">
+      <img id="image" src="" alt="Card Image" />
+    </div>
+    <div class="content">
+      <h2 id="title"></h2>
+      <slot></slot>
+    </div>
+    <button-component id="cta">Call to Action</button-component>
+  </div>
+</template>
+
+<script type="module">
+  import {
+    getAverageColor
+  } from '/assets/js/card/dist/main.js';
+
+  class CardComponent extends HTMLElement {
+    static observedAttributes = ['title', 'image-src', 'image-alt', 'cta-text'];
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document.getElementById("card-template").content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+
+    async attributeChangedCallback(name, oldValue, newValue) {
+      if (name === 'title') {
+        this.shadowRoot.getElementById('title').textContent = newValue;
+      } else if (name === 'image-src') {
+        const image = this.shadowRoot.getElementById('image');
+        image.src = newValue;
+        const color = await getAverageColor(image);
+        this.shadowRoot.querySelector('.card').style.setProperty('--color-primary', color.hex);
+      } else if (name === 'image-alt') {
+        this.shadowRoot.getElementById('image').alt = newValue;
+      } else if (name === 'cta-text') {
+        this.shadowRoot.getElementById('cta').textContent = newValue;
+      }
+    }
+
+    get title() {
+      return this.getAttribute('title');
+    }
+
+    set title(value) {
+      this.setAttribute('title', value);
+    }
+
+    get imageSrc() {
+      return this.getAttribute('image-src');
+    }
+
+    set imageSrc(value) {
+      this.setAttribute('image-src', value);
+    }
+
+    get imageAlt() {
+      return this.getAttribute('image-alt');
+    }
+
+    set imageAlt(value) {
+      this.setAttribute('image-alt', value);
+    }
+
+    get ctaText() {
+      return this.getAttribute('cta-text');
+    }
+
+    set ctaText(value) {
+      this.setAttribute('cta-text', value);
+    }
+  }
+
+  customElements.define("card-component", CardComponent);
+</script>

@@ -1,0 +1,48 @@
+<template id="link-template">
+  <style>
+    .link {
+      border: none;
+      text-decoration: none;
+      display: block;
+      font-size: 1.2rem;
+      color: var(--color-primary, #505050);
+      cursor: pointer;
+    }
+  </style>
+  <a id="link" class="link">
+    » <slot></slot>
+  </a>
+</template>
+
+<script>
+  class LinkComponent extends HTMLElement {
+    static get observedAttributes() {
+      return ['href'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === 'href') {
+        this.shadowRoot.getElementById('link').setAttribute("href", newValue);
+      }
+    }
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document.getElementById("link-template").content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+
+    get href() {
+      return this.hasAttribute('href');
+    }
+
+    set href(value) {
+      this.setAttribute('href', "true");
+    }
+  }
+
+  customElements.define("link-component", LinkComponent);
+</script>

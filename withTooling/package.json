@@ -1,0 +1,24 @@
+{
+	"name": "withtooling",
+	"version": "1.0.0",
+	"main": "main.js",
+	"scripts": {
+		"build": "npm run build --workspaces",
+		"start": "node --watch --watch-path=./assets --watch-path=./src --watch-path=main.js  main.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"connect-livereload": "^0.6.1",
+		"ejs": "^3.1.10",
+		"express": "^4.21.2",
+		"livereload": "^0.9.3"
+	},
+	"workspaces": [
+		"assets/lit-component",
+		"assets/react-component",
+		"assets/vue-component",
+		"assets/js/card"
+	]
+}

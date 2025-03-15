@@ -1,0 +1,79 @@
+<template id="search-template">
+  <style>
+    .search {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0.5rem;
+      background-color: #fff;
+
+      .input {
+        border: none;
+        outline: none;
+        flex-grow: 1;
+        padding: 0.5rem;
+        font-size: 1rem;
+        min-width: 0;
+      }
+
+      .button {
+        background-color: var(--color-primary, #505050);
+        border: none;
+        color: var(--color-on-primary, #fff);
+        padding: 0.5rem 1rem;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1rem;
+        margin-left: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    }
+  </style>
+  <form class="search" novalidate id="search-form">
+    <input type="search" class="input" id="input" placeholder="Search...">
+    <button class="button" type="submit">Search</button>
+  </form>
+</template>
+
+<script>
+  class SearchComponent extends HTMLElement {
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document
+        .getElementById("search-template")
+        .content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+
+    connectedCallback() {
+      this.shadowRoot
+        .getElementById("search-form")
+        .addEventListener("submit", this.#onSubmit.bind(this));
+    }
+
+    disconnectedCallback() {
+      this.shadowRoot
+        .getElementById("search-form")
+        .removeEventListener("submit", this.#onSubmit.bind(this));
+    }
+
+    #onSubmit(event) {
+      event.preventDefault();
+      const query = this.shadowRoot.getElementById("input").value;
+      this.dispatchEvent(
+        new CustomEvent("search", {
+          detail: {
+            query
+          }
+        }));
+    }
+  }
+
+  customElements.define("search-component", SearchComponent);
+</script>

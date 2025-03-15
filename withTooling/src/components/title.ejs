@@ -1,0 +1,29 @@
+<template id="title-template">
+  <style>
+    .title {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+  <h1 class="title">
+    <slot></slot>
+  </h1>
+</template>
+
+<script>
+  class TitleComponent extends HTMLElement {
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document
+        .getElementById("title-template")
+        .content.cloneNode(true);
+      shadow.appendChild(template);
+    }
+  }
+
+  customElements.define("title-component", TitleComponent);
+</script>

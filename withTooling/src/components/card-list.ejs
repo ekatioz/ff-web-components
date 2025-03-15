@@ -1,0 +1,74 @@
+<%- include("./loading-indicator.ejs") %>
+<%- include('./group.ejs') %>
+<%- include('./search.ejs') %>
+
+<template id="card-list-template">
+  <style>
+    #loading-indicator {
+      display: none;
+
+
+      #card-list[data-loading]+& {
+        display: block;
+      }
+    }
+  </style>
+  <stack-component>
+    <search-component id="search"></search-component>
+    <group-component id="card-list" data-loading>
+    </group-component>
+    <loading-indicator-component id="loading-indicator"></loading-indicator-component>
+  </stack-component>
+</template>
+
+<script>
+  class CardListComponent extends HTMLElement {
+
+    #cardList = null;
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({
+        mode: "open"
+      });
+      const template = document
+        .getElementById("card-list-template")
+        .content.cloneNode(true);
+      shadow.appendChild(template);
+      this.#cardList = this.shadowRoot.getElementById("card-list");
+    }
+
+    async connectedCallback() {
+      this.shadowRoot
+        .getElementById("search")
+        .addEventListener("search", this.#onSearch.bind(this));
+      this.#renderArticles(await this.#loadArticles(""));
+    }
+
+    async #onSearch(event) {
+      this.#cardList.innerHTML = "";
+      this.#renderArticles(await this.#loadArticles(event.detail.query));
+    }
+
+    async #loadArticles(query) {
+      this.#cardList.dataset.loading = "";
+      const articles = await (await fetch("/api/articles?q=" + query)).json();
+      delete this.#cardList.dataset.loading;
+      return articles;
+    }
+
+    #renderArticles(articles) {
+      articles.forEach((article) => {
+        const card = document.createElement("card-component");
+        card.title = article.title
+        card.textContent = article.content;
+        card.imageSrc = article.imageSrc;
+        card.imageAlt = article.imageAlt;
+        card.ctaText = article.ctaText;
+        this.#cardList.appendChild(card);
+      });
+    }
+  }
+
+  customElements.define("card-list-component", CardListComponent);
+</script>
